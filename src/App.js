@@ -7,10 +7,11 @@ import Header from "./components/header/Header";
 import SignInUp from "./pages/signInUp/SignInUp";
 
 // Se importa el objeto para autenticar con google
-import { auth } from "./firebase/Firebase.utils";
+import { auth, createUserProfileDocument } from "./firebase/Firebase.utils";
 
 // Se importa el componente Route
 import { Route, Switch } from "react-router-dom";
+import { getDefaultWatermarks } from "istanbul-lib-report";
 
 class App extends React.Component {
   constructor() {
@@ -27,10 +28,31 @@ class App extends React.Component {
   // Se crea un lyfeCycledMethod para iniciar sesion
   componentDidMount() {
     // La variable this.unsuscribeFromAuth se iguala a la funcion para iniciar sesion
-    this.unsuscribeFromAuth = auth.onAuthStateChanged(user => {
-      this.setState({ currentUser: user });
+    this.unsuscribeFromAuth = auth.onAuthStateChanged(async userAuth => {
+      if (userAuth) {
+        // se obtiene la referencia del usuario
+        const userRef = await createUserProfileDocument(userAuth);
 
-      console.log(user);
+        // Se obtiene la informacion del usuario usando snapShot
+        userRef.onSnapshot(snapShot => {
+          // Se actualiza el estado
+          this.setState({
+            currentUser: {
+              // Se guarda el id con el id del snaphsot
+              id: snapShot.id,
+              // y se hace spread operator de la demas inofrmaicon del snapshot
+              ...snapShot.data()
+            }
+          });
+          console.log(this.state);
+        });
+      }
+      // En caso de que se userAuth se tiene un valor de nulo se guarde ese  valor en el estado (null)
+      else {
+        this.setState({ currentUser: userAuth });
+      }
+
+      // console.log(user);
     });
   }
 
