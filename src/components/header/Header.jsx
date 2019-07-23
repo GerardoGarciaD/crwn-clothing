@@ -3,7 +3,11 @@ import "./Header.scss";
 import { Link } from "react-router-dom";
 import { ReactComponent as Logo } from "../../assets/crown.svg";
 
-export default function Header() {
+// Se importa la funcion auth para corroborar las sesiones
+import { auth } from "../../firebase/Firebase.utils";
+
+// Se destructturing de las props
+export default function Header({ currentUser }) {
   return (
     <div className="header">
       <Link to="/" className="logo-container">
@@ -17,6 +21,16 @@ export default function Header() {
         <Link className="option" to="/shop">
           Contact
         </Link>
+
+        {currentUser ? (
+          <div className="option" onClick={() => auth.signOut()}>
+            SIGN OUT
+          </div>
+        ) : (
+          <Link className="option" to="/signin">
+            SIGN IN
+          </Link>
+        )}
       </div>
     </div>
   );
