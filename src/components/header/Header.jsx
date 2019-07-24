@@ -3,11 +3,16 @@ import "./Header.scss";
 import { Link } from "react-router-dom";
 import { ReactComponent as Logo } from "../../assets/crown.svg";
 
+// se importa la funcion que crea High Order Components
+import { connect } from "react-redux";
+
 // Se importa la funcion auth para corroborar las sesiones
 import { auth } from "../../firebase/Firebase.utils";
+import RootReducer from "../../redux/RootReducer";
+import userReducer from "../../redux/user/UserReducer";
 
 // Se destructturing de las props
-export default function Header({ currentUser }) {
+function Header({ currentUser }) {
   return (
     <div className="header">
       <Link to="/" className="logo-container">
@@ -35,3 +40,12 @@ export default function Header({ currentUser }) {
     </div>
   );
 }
+
+// Con esta funcion permite el acceso al estado RootReducer, a su vez al userReducer y por ultimo al currentUser
+const mapsStateToProp = state => ({
+  // se obtiene el objeto currentUser
+  currentUser: state.user.currentUser
+});
+
+// Finalmete se exporta el componente como un highOrderCommponent
+export default connect(mapsStateToProp)(Header);
