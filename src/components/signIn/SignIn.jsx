@@ -4,7 +4,7 @@ import "./SignIn.scss";
 import FormInput from "../formInput/FormInput";
 import CustomButton from "../customButon/CustomButton";
 
-import { signInWithGoogle } from "../../firebase/Firebase.utils";
+import { auth, signInWithGoogle } from "../../firebase/Firebase.utils";
 
 export default class SignIn extends Component {
   constructor(props) {
@@ -17,8 +17,19 @@ export default class SignIn extends Component {
   }
 
   // Metodo para controlar al momento de hacer submit
-  handleSubmit = event => {
+  handleSubmit = async event => {
     event.preventDefault();
+
+    // Se obtienen los valores del estado
+    const { email, password } = this.state;
+
+    try {
+      // Se utiliza la funcion de firebase para iniciar sesion con usuario y contraseña
+      await auth.signInWithEmailAndPassword(email, password);
+      this.setState({ email: "", password: "" });
+    } catch (error) {
+      console.log(error);
+    }
 
     this.setState({ email: "", password: "" });
   };
@@ -53,7 +64,7 @@ export default class SignIn extends Component {
           <FormInput
             type="password"
             name="password"
-            value={this.state.email}
+            value={this.state.password}
             required
             label="password"
             handleChange={this.handleChange}
