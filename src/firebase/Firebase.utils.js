@@ -4,18 +4,22 @@ import "firebase/auth";
 
 // Configuracion y llaves para utilizar firebase
 const config = {
-  apiKey: "AIzaSyCGjiIOdYUbJk088z2Rxfi3ynTaSrJGaHw",
-  authDomain: "crwn-db-4c6c1.firebaseapp.com",
-  databaseURL: "https://crwn-db-4c6c1.firebaseio.com",
-  projectId: "crwn-db-4c6c1",
-  storageBucket: "",
-  messagingSenderId: "943443904106",
-  appId: "1:943443904106:web:ea8d3a28fa921653"
+  apiKey: "AIzaSyC_gm1h2YMOSg8kTSM61DUE_HAq5I96TtI",
+  authDomain: "crwn-db-46b62.firebaseapp.com",
+  databaseURL: "https://crwn-db-46b62.firebaseio.com",
+  projectId: "crwn-db-46b62",
+  storageBucket: "crwn-db-46b62.appspot.com",
+  messagingSenderId: "1009468260662",
+  appId: "1:1009468260662:web:e9a090e210283bc8"
 };
+
+firebase.initializeApp(config);
 
 // Obtener usuarios cuando se inicia sesion con Google y guardarlos en la base de datos de firebase
 
 export const createUserProfileDocument = async (userAuth, additionalData) => {
+  // console.log(userAuth);
+
   // Se verifica si existe el objeto userAuth
   if (!userAuth) return;
 
@@ -26,7 +30,7 @@ export const createUserProfileDocument = async (userAuth, additionalData) => {
   const snapShot = await userRef.get();
 
   // Se verifica si existe el snapshot
-  if (!snapShot.exist) {
+  if (!snapShot.exists) {
     // Se obtienen los valores del usuario logueado
     const { displayName, email } = userAuth;
     const createdAt = new Date();
@@ -40,14 +44,12 @@ export const createUserProfileDocument = async (userAuth, additionalData) => {
         ...additionalData
       });
     } catch (error) {
-      console.log("Error Creating the User", error.message);
+      console.log("error creating user", error.message);
     }
-
-    return userRef;
   }
-};
 
-firebase.initializeApp(config);
+  return userRef;
+};
 
 // Esto va a servir para poder iniciar sesion
 export const auth = firebase.auth();
