@@ -8,6 +8,13 @@ import { connect } from "react-redux";
 
 // Se importa la funcion auth para corroborar las sesiones
 import { auth } from "../../firebase/Firebase.utils";
+
+// Se importa el componente para el icono del carrito
+import CartIcon from "../cartIcon/CartIcon";
+
+// Se importa el CartDropDown
+import CartDropDown from "../cartDropDown/CartDropDown";
+
 import RootReducer from "../../redux/RootReducer";
 import userReducer from "../../redux/user/UserReducer";
 
@@ -36,6 +43,8 @@ function Header({ currentUser }) {
             SIGN IN
           </Link>
         )}
+        <CartIcon />
+        <CartDropDown />
       </div>
     </div>
   );
