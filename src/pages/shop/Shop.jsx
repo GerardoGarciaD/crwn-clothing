@@ -21,9 +21,8 @@ export default class Shop extends Component {
     return (
       <div className="shop-page">
         {/* Se recorre la "variable u objeto" collection */}
-        Aqui se toman como parametros id, y se utiliza spread operator para
-        pasar las demas propiedades de
-        {/* cada objeto que es recorrido */}
+        {/* Aqui se toman como parametros id, y se utiliza spread operator para
+        pasar las demas propiedades de cada objeto que es recorrido */}
         {collections.map(({ id, ...otherCollectionProps }) => (
           // Se hace render al componente CollectionPreview y se mandan las props
           <CollectionPreview key={id} {...otherCollectionProps} />
