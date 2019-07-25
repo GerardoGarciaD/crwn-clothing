@@ -18,8 +18,9 @@ import CartDropDown from "../cartDropDown/CartDropDown";
 import RootReducer from "../../redux/RootReducer";
 import userReducer from "../../redux/user/UserReducer";
 
-// Se destructturing de las props
-function Header({ currentUser }) {
+// Se destructturing de las props de este mismo componente (ya que ahora es un High Order Component ) por que
+// se utilizo la funcion connect de react-redux
+function Header({ currentUser, hidden }) {
   return (
     <div className="header">
       <Link to="/" className="logo-container">
@@ -44,16 +45,18 @@ function Header({ currentUser }) {
           </Link>
         )}
         <CartIcon />
-        <CartDropDown />
+        {hidden ? null : <CartDropDown />}
       </div>
     </div>
   );
 }
 
-// Con esta funcion permite el acceso al estado RootReducer, a su vez al userReducer y por ultimo al currentUser
-const mapsStateToProp = state => ({
-  // se obtiene el objeto currentUser
-  currentUser: state.user.currentUser
+// Con esta funcion permite el acceso al estado general (RootRedcer)
+// se hace destructuring de los objetos que se desean obtener y los valores de esos objetos
+const mapsStateToProp = ({ user: { currentUser }, cart: { hidden } }) => ({
+  // Como es una arrow function se regresan por default estos objetos
+  currentUser,
+  hidden
 });
 
 // Finalmete se exporta el componente como un highOrderCommponent
