@@ -1,4 +1,4 @@
-// Se importan todas las cciones que existan en CartTypes
+// Se importan todas las acciones que existan en CartTypes
 import CartActionTypes from "./CartTypes";
 
 const INITIAL_STATE = {
