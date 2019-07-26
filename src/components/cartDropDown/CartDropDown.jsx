@@ -4,6 +4,9 @@ import CustomButton from "../customButon/CustomButton";
 // Se obtiene la funcion para poder crear high order componets y hacer uso del state
 import { connect } from "react-redux";
 
+// Esta funcion permite mandar el state a cada selector de manera automatica
+import { createStructuredSelector } from "reselect";
+
 import "./CartDropDown.scss";
 import CartItem from "../cartItem/CartItem";
 
@@ -27,9 +30,9 @@ function CartDropDown({ cartItems }) {
 // Se obtiene la informacion del store
 // Se hace destructuring de la informacion,  en donde se obtiene el objeto cart y a su ves hace destructuring
 // para obtener el objeto cartItems
-const mapStateToProps = state => ({
+const mapStateToProps = createStructuredSelector({
   // Se regresa el objeto cartItems
-  cartItems: selectCartItems(state)
+  cartItems: selectCartItems
 });
 
 export default connect(mapStateToProps)(CartDropDown);
