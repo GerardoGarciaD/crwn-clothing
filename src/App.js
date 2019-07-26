@@ -18,6 +18,12 @@ import { connect } from "react-redux";
 // Se obtiene la funcion (accion) para crear un nuevo usuario
 import { setCurrentUser } from "./redux/user/UserActions";
 
+// Esta funcion permite mandar el state a cada selector de manera automatica
+import { createStructuredSelector } from "reselect";
+
+// se importa el selector para obtener el usuario actual
+import { selectCurrentUser } from "./redux/user/UserSelectors";
+
 class App extends React.Component {
   // "Variable"  con valor nulo  como "bandera" o valor por default
   unsuscribeFromAuth = null;
@@ -81,8 +87,8 @@ class App extends React.Component {
 }
 
 // Se obtiene el usuario que esta logueado desde el State de Redux
-const mapStateToProps = ({ user }) => ({
-  currentUser: user.currentUser
+const mapStateToProps = createStructuredSelector({
+  currentUser: selectCurrentUser
 });
 
 const mapDispatchToProps = dispatch => ({
