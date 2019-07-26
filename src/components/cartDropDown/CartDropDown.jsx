@@ -7,6 +7,9 @@ import { connect } from "react-redux";
 import "./CartDropDown.scss";
 import CartItem from "../cartItem/CartItem";
 
+// Se importa el selector para obtener todos los elementos del carrito
+import { selectCartItems } from "../../redux/cart/CartSelectors";
+
 // Se hace destructuring del elemento que se quiere obtener del stado cuando se crea el  mapStateToProps
 function CartDropDown({ cartItems }) {
   return (
@@ -24,9 +27,9 @@ function CartDropDown({ cartItems }) {
 // Se obtiene la informacion del store
 // Se hace destructuring de la informacion,  en donde se obtiene el objeto cart y a su ves hace destructuring
 // para obtener el objeto cartItems
-const mapStateToProps = ({ cart: { cartItems } }) => ({
+const mapStateToProps = state => ({
   // Se regresa el objeto cartItems
-  cartItems
+  cartItems: selectCartItems(state)
 });
 
 export default connect(mapStateToProps)(CartDropDown);
