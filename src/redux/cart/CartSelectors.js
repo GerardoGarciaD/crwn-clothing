@@ -13,6 +13,11 @@ export const selectCartItems = createSelector(
   cart => cart.cartItems
 );
 
+export const selectCartHidden = createSelector(
+  [selectCart],
+  cart => cart.hidden
+);
+
 // Se seleccionan o se cuentan todos los items del carrito
 export const selectCartItemsCount = createSelector(
   // se hace referencia a la variable que contiene los items del carrito
