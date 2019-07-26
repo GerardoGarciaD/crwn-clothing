@@ -14,9 +14,9 @@ export default function CollectionPreview({ title, items }) {
           // Se filtran los items para para que solo se muestren los elementos con id menor a 4
           .filter((item, idx) => idx < 4)
           // Se hace un mapeo de los items con id menor  a 4, se obtienen- las propiedades a mandar
-          .map(({ id, ...otherItemProps }) => (
+          .map(item => (
             // Se hace render al componente CollectionItem con las props obtenidas
-            <CollectionItem key={id} {...otherItemProps} />
+            <CollectionItem key={item.id} item={item} />
           ))}
       </div>
     </div>
