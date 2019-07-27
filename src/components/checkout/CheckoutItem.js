@@ -1,6 +1,10 @@
 import React from "react";
 
+// Se importa la funcion para conectar el componente con el state
+// y crear el high order component
 import { connect } from "react-redux";
+
+// Se obtienen las acciones para poder crear funciones
 import {
   clearItemFromCart,
   addItem,
@@ -39,6 +43,7 @@ function CheckoutItem({ cartItem, clearItem, addItem, removeItem }) {
   );
 }
 
+// Se crean las funciones que seran exportadas, estas funciones llaman a las acciones de redux
 const mapDispatchToProps = dispatch => ({
   clearItem: item => dispatch(clearItemFromCart(item)),
   addItem: item => dispatch(addItem(item)),
