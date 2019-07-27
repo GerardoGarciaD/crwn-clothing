@@ -5,6 +5,7 @@ import HomePage from "./pages/homepage/HomePage";
 import ShopPage from "./pages/shop/Shop";
 import Header from "./components/header/Header";
 import SignInUp from "./pages/signInUp/SignInUp";
+import CheckoutPage from "./pages/checkout/CheckoutPage";
 
 // Se importa el objeto para autenticar con google
 import { auth, createUserProfileDocument } from "./firebase/Firebase.utils";
@@ -80,6 +81,7 @@ class App extends React.Component {
               this.props.currentUser ? <Redirect to="/" /> : <SignInUp />
             }
           />
+          <Route exact path="/checkout" component={CheckoutPage} />
         </Switch>
       </div>
     );
