@@ -3,6 +3,9 @@ import ReactDOM from "react-dom";
 import "./index.css";
 import App from "./App";
 
+// Funcion para "envolver" la aplicacion para que pueda ser guardada de forma local
+import { PersistGate } from "redux-persist/integration/react";
+
 // Se importa el provider de react-redux
 import { Provider } from "react-redux";
 
@@ -10,12 +13,14 @@ import { Provider } from "react-redux";
 import { BrowserRouter } from "react-router-dom";
 
 // se obtiene toda la informacion para el proyecto y se manda como prop
-import store from "./redux/Store";
+import { store, persistor } from "./redux/Store";
 
 ReactDOM.render(
   <Provider store={store}>
     <BrowserRouter>
-      <App />
+      <PersistGate persistor={persistor}>
+        <App />
+      </PersistGate>
     </BrowserRouter>
   </Provider>,
 
