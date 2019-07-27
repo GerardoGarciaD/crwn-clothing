@@ -24,3 +24,20 @@ export const addItemToCart = (cartItems, cartItemToAdd) => {
   //   pero ademas se ingresa el nuevo item, con la nueva propiedad quantity
   return [...cartItems, { ...cartItemToAdd, quantity: 1 }];
 };
+
+// Funcion para restar los items y eliminar el item del carrito una unidad
+export const removeItemFromCart = (cartItems, cartItemToRemove) => {
+  const existingCartItem = cartItems.find(
+    cartItem => cartItem.id === cartItemToRemove.id
+  );
+
+  if (existingCartItem.quantity === 1) {
+    return cartItems.filter(cartItem => cartItem.id != cartItemToRemove.id);
+  }
+
+  return cartItems.map(cartItem =>
+    cartItem.id === cartItemToRemove.id
+      ? { ...cartItem, quantity: cartItem.quantity - 1 }
+      : cartItem
+  );
+};
