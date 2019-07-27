@@ -30,3 +30,16 @@ export const selectCartItemsCount = createSelector(
       0
     )
 );
+
+// Se seleccionan o se cuentan todos los items del carrito
+export const selectCartTotal = createSelector(
+  // se hace referencia a la variable que contiene los items del carrito
+  [selectCartItems],
+  //   Se cuentan los elementos del carrito  utilizando reduce
+  cartItems =>
+    cartItems.reduce(
+      (accumalatedTotal, cartItem) =>
+        accumalatedTotal + cartItem.quantity * cartItem.price,
+      0
+    )
+);
