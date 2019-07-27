@@ -1,7 +1,7 @@
 // Se importan todas las acciones que existan en CartTypes
 import CartActionTypes from "./CartTypes";
 
-import { addItemToCart } from "./CartUtils";
+import { addItemToCart, removeItemFromCart } from "./CartUtils";
 
 // Se importa la funcion que verifica si un producto ya estaba en el carrito o no
 
@@ -28,6 +28,21 @@ const cartReducer = (state = INITIAL_STATE, action) => {
         // Aqui se manda a llamar la funcion que verifica si ya existe un item en especifico en el carrito
         cartItems: addItemToCart(state.cartItems, action.payload)
       };
+
+    case CartActionTypes.REMOVE_ITEM:
+      return {
+        ...state,
+        cartItems: removeItemFromCart(state.cartItems, action.payload)
+      };
+
+    case CartActionTypes.CLEAR_ITEM_FROM_CART:
+      return {
+        ...state,
+        cartItems: state.cartItems.filter(
+          cartItem => cartItem.id != action.payload.id
+        )
+      };
+
     default:
       return state;
   }
