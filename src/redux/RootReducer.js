@@ -12,6 +12,8 @@ import storage from "redux-persist/lib/storage";
 // Se importan los reducers del usuairo y el carrito
 import userReducer from "./user/UserReducer";
 import cartReducer from "./cart/CartReducer";
+import directoryReducer from "./directory/DirectoryReducer";
+import shopReducer from "./shop/ShopReducer";
 
 const persistConfig = {
   key: "root",
@@ -23,7 +25,9 @@ const persistConfig = {
 // Se crea el reducer principal que contiene todos los reducers creados
 const rootReducer = combineReducers({
   user: userReducer,
-  cart: cartReducer
+  cart: cartReducer,
+  directory: directoryReducer,
+  shop: shopReducer
 });
 
 // Se exporta el reducer principal asi como la configuracion de la informmacion que se
