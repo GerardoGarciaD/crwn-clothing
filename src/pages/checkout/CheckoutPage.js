@@ -12,6 +12,8 @@ import {
 } from "../../redux/cart/CartSelectors";
 
 import CheckoutItem from "../../components/checkout/CheckoutItem";
+// Componente que muestra el boton para procesar el pago
+import StripeButton from "../../components/stripeButton/StripeButton";
 
 // se importan las props del high order component
 function CheckoutPage({ cartItems, total }) {
@@ -44,6 +46,12 @@ function CheckoutPage({ cartItems, total }) {
       <div className="total">
         <span>Total: ${total}</span>
       </div>
+      <div className="test-warning">
+        *Please use the following test credit card for Payments*
+        <br />
+        4242 4242 4242 4242 - Exp: 01/20 - CVV: 123
+      </div>
+      <StripeButton price={total} />
     </div>
   );
 }
