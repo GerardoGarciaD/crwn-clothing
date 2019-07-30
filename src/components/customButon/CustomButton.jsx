@@ -18,3 +18,13 @@ export default function CustomButton({
     </button>
   );
 }
+
+// import React from "react";
+// import "./CustomButton.scss";
+
+// // Se importa el styled component para el estilo del boton
+// import { CustomButtonContainer } from "./CustomButtonStyles";
+
+// export default function CustomButton({ children, ...props }) {
+//   return <CustomButtonContainer {...props}> {children}</CustomButtonContainer>;
+// }

@@ -3,6 +3,15 @@ import "./Header.scss";
 import { Link } from "react-router-dom";
 import { ReactComponent as Logo } from "../../assets/crown.svg";
 
+// Se importan los styled components
+import {
+  HeaderContainer,
+  LogoContainer,
+  OptionDiv,
+  OptionsContainer,
+  OptionLink
+} from "./HeaderStyles";
+
 // se importa la funcion que crea High Order Components
 import { connect } from "react-redux";
 
@@ -28,32 +37,30 @@ import { selectCartHidden } from "../../redux/cart/CartSelectors";
 // se utilizo la funcion connect de react-redux
 function Header({ currentUser, hidden }) {
   return (
-    <div className="header">
-      <Link to="/" className="logo-container">
+    <HeaderContainer className="header">
+      <LogoContainer to="/">
         <Logo className="logo" />
-      </Link>
+      </LogoContainer>
 
-      <div className="options">
-        <Link className="option" to="/shop">
-          Shop
-        </Link>
+      <OptionsContainer>
+        <OptionLink to="/shop">Shop</OptionLink>
         <Link className="option" to="/shop">
           Contact
         </Link>
 
         {currentUser ? (
-          <div className="option" onClick={() => auth.signOut()}>
+          <OptionDiv className="option" onClick={() => auth.signOut()}>
             SIGN OUT
-          </div>
+          </OptionDiv>
         ) : (
-          <Link className="option" to="/signin">
+          <OptionLink className="option" to="/signin">
             SIGN IN
-          </Link>
+          </OptionLink>
         )}
         <CartIcon />
         {hidden ? null : <CartDropDown />}
-      </div>
-    </div>
+      </OptionsContainer>
+    </HeaderContainer>
   );
 }
 
