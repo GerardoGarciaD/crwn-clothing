@@ -1,7 +1,6 @@
 import React from "react";
 import "./CollectionsOverview.scss";
 
-import { Route } from "react-router-dom";
 import { connect } from "react-redux";
 import { createStructuredSelector } from "reselect";
 import CollectionPreview from "../collectionPreview/CollectionPreview";
