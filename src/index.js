@@ -6,7 +6,7 @@ import App from "./App";
 // Funcion para "envolver" la aplicacion para que pueda ser guardada de forma local
 import { PersistGate } from "redux-persist/integration/react";
 
-// Se importa el provider de react-redux
+// Se importa el provider de react-redux, esto permite dar acceso a la informacion del estado a todos los componentes
 import { Provider } from "react-redux";
 
 // Se importa el broswer router
