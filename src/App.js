@@ -7,7 +7,7 @@ import Header from "./components/header/Header";
 import SignInUp from "./pages/signInUp/SignInUp";
 import CheckoutPage from "./pages/checkout/CheckoutPage";
 
-// Se importa el objeto para autenticar con google
+// Se importan las para autenticar con google, crear usuarios en la base de datos y añadir la colleccion y los documentos (items de la tienda)
 import { auth, createUserProfileDocument } from "./firebase/Firebase.utils";
 
 // Se importa el componente Route
@@ -60,7 +60,8 @@ class App extends React.Component {
     });
   }
 
-  // Se crea un lyfeCycledMethod para mantener la sesion iniciada (cuando se desmonta el componente )
+  // Se crea un lyfeCycledMethod para mantener la "desuscribirse" de la sesion de google auth cuando se
+  // desmonta el componente del DOM
   componentWillUnmount() {
     this.unsuscribeFromAuth();
   }
