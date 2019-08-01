@@ -23,13 +23,16 @@ export const createUserProfileDocument = async (userAuth, additionalData) => {
   // Se verifica si existe el objeto userAuth
   if (!userAuth) return;
 
-  // se hace el query en la base de datos de firebase
+  // se hace el query (objeto) en la base de datos de firebase, esta solo es la referencía hacia un usuario, esta es la referencia
+  // se utiliza para crear un snapShot de la informacion del usuario
   const userRef = firestore.doc(`users/${userAuth.uid}`);
 
-  // El snapshot se obtiene con la referenceia del query de arriba
+  // El snapshot (objeto) se obtiene con la referenceia del query de arriba, con el snapshot se verifica si el usuario existe en
+  // la base de datos
   const snapShot = await userRef.get();
+  // console.log(snapShot);
 
-  // Se verifica si existe el snapshot
+  // Se verifica si existe el snapshot (si el usuario existe o no en la base de datos)
   if (!snapShot.exists) {
     // Se obtienen los valores del usuario logueado
     const { displayName, email } = userAuth;
@@ -51,7 +54,55 @@ export const createUserProfileDocument = async (userAuth, additionalData) => {
   return userRef;
 };
 
-// Esto va a servir para poder iniciar sesion
+// Funcion para añadir collecion y documentos (tabla y elementos) a la base de datos
+
+export const addCollectionAndDocuments = async (
+  collectionKey,
+  objectsToAdd
+) => {
+  const collectionRef = firestore.collection(collectionKey);
+
+  // Esto es para verificar que TODOS los elementos se carguen a la base de datos, ya que si por alguna razon no se  guardan todos se cancela la accion
+  const batch = firestore.batch();
+
+  // Se recorren todos los grupos de la tienda (hats, sneakers, etc.)
+  objectsToAdd.forEach(obj => {
+    // Se crea  una nueva referencia, en donde se crea un id unico para cada grupo de la tienda
+    const newDocRef = collectionRef.doc();
+    // console.log(newDocRef);
+
+    // Se guarda cada
+    batch.set(newDocRef, obj);
+  });
+
+  return await batch.commit();
+};
+
+// Esta funcion recibe como parametro querySnapshots, y convierte esos querys un array con los objetos de cada grupo de items (hats, etc)
+export const convertCollectionsSnapshotToMap = collections => {
+  // Aqui se recorre cada doc que se recibe
+  const transformCollection = collections.docs.map(doc => {
+    // Se hace destructuring del documento, en donde ahora si se obtiene la informacion de la base de datos, como se recibe un snapshot, se utiliza
+    // doc.data() para obtener la informacion, es como si se utilizara snapshot.data()
+    const { title, items } = doc.data();
+
+    // Finalmente se regresa el nuevo objeto, con el nombre para la ruta, el id del documento (id de la collecion, no de cada elemento ) el titulo
+    // y los items de la coleccion (grupo de item: hats, sneakers, jackets, etc)
+    return {
+      routeName: encodeURI(title.toLowerCase()),
+      id: doc.id,
+      title,
+      items
+    };
+  });
+
+  return transformCollection.reduce((accumulator, collection) => {
+    accumulator[collection.title.toLowerCase()] = collection;
+    return accumulator;
+  }, {});
+};
+
+// Esto sirve para poder iniciar sesion
 export const auth = firebase.auth();
 
 // Esto va a servir para poder almacenar informacion a firebase
