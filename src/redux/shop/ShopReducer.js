@@ -1,10 +1,10 @@
 // Se importa la informacion inicial de la tienda
-import SHOP_DATA from "./ShopData";
+
 import ShopActionTypes from "./ShopTypes";
 
 // Se inicializa el estado con la informacion obtenida
 const INITIAL_STATE = {
-  collections: SHOP_DATA
+  collections: null
 };
 
 const shopReducer = (state = INITIAL_STATE, action) => {
