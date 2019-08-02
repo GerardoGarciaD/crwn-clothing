@@ -1,4 +1,4 @@
-// Se agrega el nombre de la accion
+// Se agregan los nombres de las acciones
 const ShopActionTypes = {
   FETCH_COLLECTIONS_START: "FETCH_COLLECTIONS_START",
   FETCH_COLLECTIONS_SUCCESS: "FETCH_COLLECTIONS_SUCCESS",
