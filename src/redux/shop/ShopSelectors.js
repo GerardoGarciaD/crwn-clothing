@@ -13,7 +13,8 @@ export const selectCollectionsForPreview = createSelector(
   [selectCollections],
   // Se obtienen las "llaves" de cada grupo de elementos (hats, sneakers, etc) y apartir de esas llaves
   // es obtienen cada uno de los productos de ese grupo
-  collections => Object.keys(collections).map(key => collections[key])
+  collections =>
+    collections ? Object.keys(collections).map(key => collections[key]) : []
 );
 
 // Esta funcion recibe dos parametros, en donde el primero es el id que se va a buscar
@@ -21,5 +22,5 @@ export const selectCollectionsForPreview = createSelector(
 export const selectCollection = collectionUrlParam =>
   createSelector(
     [selectCollections],
-    collections => collections[collectionUrlParam]
+    collections => (collections ? collections[collectionUrlParam] : null)
   );
