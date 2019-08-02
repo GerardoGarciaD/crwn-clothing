@@ -7,21 +7,31 @@ import WithSpinner from "../../components/withSpinner/WithSpinner";
 
 import { connect } from "react-redux";
 
-import { updateCollections } from "../../redux/shop/ShopActions";
+import { createStructuredSelector } from "reselect";
+
+// Se importa la accion asincrona para obtener la informacion de Firebase
+import { fetchCollectionStartAsync } from "../../redux/shop/ShopActions";
+
 import {
+  selectIsCollectionFetching,
+  selectIsCollectionsLoaded
+} from "../../redux/shop/ShopSelectors";
+
+/* import {
   firestore,
   convertCollectionsSnapshotToMap
 } from "../../firebase/Firebase.utils";
-
+ */
 import { Route } from "react-router-dom";
 
 // Se iguala el HOC (WithSpinner) a nuevas variables  y se pasan los componentes como parametro
 const CollectionsOverviewWithSpinner = WithSpinner(CollectionsOverview);
 const CollectionPageWithSpinner = WithSpinner(CollectionPage);
 
-// Se obtiene la propiedad match, que se obtiene directamente desde el archivo App.js mediante route
-// en donde Route envia por defecto los parametros match, history y location
+// Propiedad match, se obtiene directamente desde el archivo App.js mediante route
+// que envia por defecto los parametros match, history y location
 class Shop extends Component {
+  /*
   // Esta es la "variable" que se utiliza para mostrar la loading page
   state = {
     loading: true
@@ -29,7 +39,7 @@ class Shop extends Component {
 
   unsubscribeFromSnapshot = null;
 
-  componentDidMount() {
+   componentDidMount() {
     const { updateCollections } = this.props;
 
     // Se obtiene la referencia de la "tabla", de firebase
@@ -49,13 +59,16 @@ class Shop extends Component {
       // Una vez que se obtienen la informacion de firebase y se actualiza el estado, la variable loading cambia a false
       this.setState({ loading: false });
     });
+  } */
+
+  componentDidMount() {
+    // Se obtiene y se ejecuta la accion asincrona que obtiene los datos
+    const { fetchCollectionStartAsync } = this.props;
+    fetchCollectionStartAsync();
   }
 
   render() {
-    const { match } = this.props;
-    console.log(this.props);
-
-    const { loading } = this.state;
+    const { match, isCollectionFetching, isCollectionsLoaded } = this.props;
     return (
       <div className="shop-page">
         {/* match.path obtiene la el url exacto de la pagina que se esta desplegando ('/shop', '/cart', etc) */}
@@ -65,7 +78,10 @@ class Shop extends Component {
           render={props => (
             // Se manda a llamar a las variables creadas en donde se pasan los parametros
             // para el  HOC
-            <CollectionsOverviewWithSpinner isLoading={loading} {...props} />
+            <CollectionsOverviewWithSpinner
+              isLoading={isCollectionFetching}
+              {...props}
+            />
           )}
         />
 
@@ -74,7 +90,10 @@ class Shop extends Component {
         <Route
           path={`${match.path}/:collectionId`}
           render={props => (
-            <CollectionPageWithSpinner isLoading={loading} {...props} />
+            <CollectionPageWithSpinner
+              isLoading={!isCollectionsLoaded}
+              {...props}
+            />
           )}
         />
       </div>
@@ -82,12 +101,16 @@ class Shop extends Component {
   }
 }
 
+const mapStateToProps = createStructuredSelector({
+  isCollectionFetching: selectIsCollectionFetching,
+  isCollectionsLoaded: selectIsCollectionsLoaded
+});
+
 const mapDispatchToProps = dispatch => ({
-  updateCollections: collectionsMap =>
-    dispatch(updateCollections(collectionsMap))
+  fetchCollectionStartAsync: () => dispatch(fetchCollectionStartAsync())
 });
 
 export default connect(
-  null,
+  mapStateToProps,
   mapDispatchToProps
 )(Shop);
