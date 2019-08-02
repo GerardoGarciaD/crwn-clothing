@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 import CollectionItem from "../../components/collectionItem/CollectionItem";
 import { selectCollection } from "../../redux/shop/ShopSelectors";
 
-// Se obtienen las props que se mandan desde el hihg order component
+// Se obtienen las props que se mandan desde el high order component
 function CollectionPage({ collection }) {
   const { title, items } = collection;
 
