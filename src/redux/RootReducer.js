@@ -18,7 +18,7 @@ import shopReducer from "./shop/ShopReducer";
 const persistConfig = {
   key: "root",
   storage,
-  // Se guardan cuales reducers se quieren guardat
+  // Se guardan cuales reducers se quieren guardar
   whitelist: ["cart"]
 };
 
