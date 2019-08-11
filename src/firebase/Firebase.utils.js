@@ -102,6 +102,16 @@ export const convertCollectionsSnapshotToMap = collections => {
   }, {});
 };
 
+// Cracion de funcion para verificar cualquier cambion de usuario en la sesion
+export const getCurrentUser = () => {
+  return new Promise((resolve, reject) => {
+    const unsubcribe = auth.onAuthStateChanged(userAuth => {
+      unsubcribe();
+      resolve(userAuth);
+    }, reject);
+  });
+};
+
 // Esto sirve para poder iniciar sesion
 export const auth = firebase.auth();
 
@@ -109,11 +119,11 @@ export const auth = firebase.auth();
 export const firestore = firebase.firestore();
 
 // Se crea un provider en donde se indica que se va a autentificar con la cuenta de google
-const provider = new firebase.auth.GoogleAuthProvider();
+export const googleProvider = new firebase.auth.GoogleAuthProvider();
 // Se pone como parametro que va a aparecer una pantalla emergente al momemnto de quere iniciar sesion con google
-provider.setCustomParameters({ prompt: "select_account" });
+googleProvider.setCustomParameters({ prompt: "select_account" });
 
 // Se crea una variable que contiene el provider
-export const signInWithGoogle = () => auth.signInWithPopup(provider);
+export const signInWithGoogle = () => auth.signInWithPopup(googleProvider);
 
 export default firebase;
