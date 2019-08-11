@@ -16,14 +16,13 @@ import { Route, Switch, Redirect } from "react-router-dom";
 // se importa la funcion que crea High Order Components
 import { connect } from "react-redux";
 
-// Se obtiene la funcion (accion) para crear un nuevo usuario
-import { setCurrentUser } from "./redux/user/UserActions";
-
 // Esta funcion permite mandar el state a cada selector de manera automatica
 import { createStructuredSelector } from "reselect";
 
 // se importa el selector para obtener el usuario actual
 import { selectCurrentUser } from "./redux/user/UserSelectors";
+
+import { checkUserSession } from "./redux/user/UserActions";
 
 class App extends React.Component {
   // "Variable"  con valor nulo  como "bandera" o valor por default
@@ -31,7 +30,7 @@ class App extends React.Component {
 
   // Se crea un lyfeCycledMethod para iniciar sesion
   componentDidMount() {
-    // Se hace destructuring de las props que se mandan desde el high order component(connect(null,mapDispatchToProps)(App))
+    /* // Se hace destructuring de las props que se mandan desde el high order component(connect(null,mapDispatchToProps)(App))
     // en este caso el la action setCurrentUser
     const { setCurrentUser } = this.props;
     // La variable this.unsuscribeFromAuth se iguala a la funcion para iniciar sesion
@@ -55,16 +54,20 @@ class App extends React.Component {
       else {
         setCurrentUser(userAuth);
       }
-
+ 
       // console.log(user);
     });
+    */
+
+    const { checkUserSession } = this.props;
+    checkUserSession();
   }
 
   // Se crea un lyfeCycledMethod para mantener la "desuscribirse" de la sesion de google auth cuando se
   // desmonta el componente del DOM
-  componentWillUnmount() {
-    this.unsuscribeFromAuth();
-  }
+  // componentWillUnmount() {
+  //   this.unsuscribeFromAuth();
+  // }
 
   render() {
     return (
@@ -94,18 +97,13 @@ const mapStateToProps = createStructuredSelector({
   currentUser: selectCurrentUser
 });
 
-const mapDispatchToProps = dispatch => ({
-  // Aqui se regresa un objeto, el cual consta de una funcion con el parametro user, en donde dispatch siempre espera como parametro una accion
-  // en esa accion se manda como parametro el mismo usuario (user) para modificar el estado (RootReducer)
-  setCurrentUser: user => dispatch(setCurrentUser(user))
-  // en este caso setCurrentUser es el objeto que se va a mandar a todos los componentes
-});
-
 // Se exporta el componente como high order component
+const mapDispatchToProps = dispatch => ({
+  checkUserSession: () => dispatch(checkUserSession())
+});
 
 // En connect, el primer parametro son las props que se obtienen del estado
 export default connect(
   mapStateToProps,
-  // En el segundo parametro se manda la accion setCurrentUser, que es la accion que será mandada como prop y utilizada en todos los componentes
   mapDispatchToProps
 )(App);
