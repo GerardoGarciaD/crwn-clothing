@@ -1,12 +1,17 @@
 import React, { Component } from "react";
+import { connect } from "react-redux";
 import "./SignIn.scss";
 
 import FormInput from "../formInput/FormInput";
 import CustomButton from "../customButon/CustomButton";
 
-import { auth, signInWithGoogle } from "../../firebase/Firebase.utils";
+// Se importan las acciones para iniciar el proceso de iniciar sesion con sagas
+import {
+  googleSignInStart,
+  emailSignInStart
+} from "../../redux/user/UserActions";
 
-export default class SignIn extends Component {
+class SignIn extends Component {
   constructor(props) {
     super(props);
 
@@ -20,18 +25,14 @@ export default class SignIn extends Component {
   handleSubmit = async event => {
     event.preventDefault();
 
+    // Se obtiene la funcion desde mapDispatchToProps
+    const { emailSignInStart } = this.props;
     // Se obtienen los valores del estado
     const { email, password } = this.state;
 
-    try {
-      // Se utiliza la funcion de firebase para iniciar sesion con usuario y contraseña
-      await auth.signInWithEmailAndPassword(email, password);
-      this.setState({ email: "", password: "" });
-    } catch (error) {
-      console.log(error);
-    }
-
     this.setState({ email: "", password: "" });
+    // Se llama a la funcion (accion)
+    emailSignInStart(email, password);
   };
 
   // Evento para controlar los inputs
@@ -45,6 +46,9 @@ export default class SignIn extends Component {
   };
 
   render() {
+    // Se obtiene la funcion (accion) desde mapDispatchToProps
+    const { googleSignInStart } = this.props;
+
     return (
       <div className="sign-in">
         <h2>I already have an account</h2>
@@ -72,7 +76,12 @@ export default class SignIn extends Component {
 
           <div className="buttons">
             <CustomButton type="submit">Sign In</CustomButton>
-            <CustomButton onClick={signInWithGoogle} isGoogleSignIn>
+            <CustomButton
+              type="button"
+              // se llama la funcion (accion)
+              onClick={googleSignInStart}
+              isGoogleSignIn
+            >
               Sign In with Google
             </CustomButton>
           </div>
@@ -81,3 +90,14 @@ export default class SignIn extends Component {
     );
   }
 }
+
+const mapDispatchToProps = dispatch => ({
+  googleSignInStart: () => dispatch(googleSignInStart()),
+  emailSignInStart: (email, password) =>
+    dispatch(emailSignInStart({ email, password }))
+});
+
+export default connect(
+  null,
+  mapDispatchToProps
+)(SignIn);
