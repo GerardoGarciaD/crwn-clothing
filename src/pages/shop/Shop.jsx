@@ -9,7 +9,7 @@ import { connect } from "react-redux";
 
 import { createStructuredSelector } from "reselect";
 
-// Se importa la accion asincrona para obtener la informacion de Firebase
+// Se importa la accion que es escuchada por sagas para obtener la informacion de Firebase
 import { fetchCollectionStart } from "../../redux/shop/ShopActions";
 
 import {
