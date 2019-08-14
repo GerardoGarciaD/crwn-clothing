@@ -10,7 +10,7 @@ import { connect } from "react-redux";
 import { createStructuredSelector } from "reselect";
 
 // Se importa la accion asincrona para obtener la informacion de Firebase
-import { fetchCollectionStartAsync } from "../../redux/shop/ShopActions";
+import { fetchCollectionStart } from "../../redux/shop/ShopActions";
 
 import {
   selectIsCollectionFetching,
@@ -63,8 +63,8 @@ class Shop extends Component {
 
   componentDidMount() {
     // Se obtiene y se ejecuta la accion asincrona que obtiene los datos
-    const { fetchCollectionStartAsync } = this.props;
-    fetchCollectionStartAsync();
+    const { fetchCollectionStart } = this.props;
+    fetchCollectionStart();
   }
 
   render() {
@@ -107,7 +107,7 @@ const mapStateToProps = createStructuredSelector({
 });
 
 const mapDispatchToProps = dispatch => ({
-  fetchCollectionStartAsync: () => dispatch(fetchCollectionStartAsync())
+  fetchCollectionStart: () => dispatch(fetchCollectionStart())
 });
 
 export default connect(

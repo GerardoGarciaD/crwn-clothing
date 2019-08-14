@@ -2,12 +2,15 @@ import React, { Component } from "react";
 
 import FormInput from "../formInput/FormInput";
 import CustomButton from "../customButon/CustomButton";
+import { connect } from "react-redux";
 
 // Se importan la funciones para firebase
-import { auth, createUserProfileDocument } from "../../firebase/Firebase.utils";
+// import { auth, createUserProfileDocument } from "../../firebase/Firebase.utils";
 import "./SignUp.scss";
+// Se importa accion que escucha las sagas
+import { signUpStart } from "../../redux/user/UserActions";
 
-export default class SignUp extends Component {
+class SignUp extends Component {
   constructor() {
     super();
 
@@ -28,7 +31,10 @@ export default class SignUp extends Component {
       return;
     }
 
-    try {
+    const { signUpStart } = this.props;
+    signUpStart(email, password, displayName);
+
+    /* try {
       // Se utiliza una funcion de firebase para crear un usuario con email y contraseña
       const { user } = await auth.createUserWithEmailAndPassword(
         email,
@@ -47,6 +53,7 @@ export default class SignUp extends Component {
     } catch (error) {
       console.log(error);
     }
+     */
   };
 
   handleChange = event => {
@@ -105,3 +112,14 @@ export default class SignUp extends Component {
     );
   }
 }
+
+// Crea el objeto  que utiliza la accion signUpStart de UserActions
+const mapDispatchToProps = dispatch => ({
+  signUpStart: (email, password, displayName) =>
+    dispatch(signUpStart({ email, password, displayName }))
+});
+
+export default connect(
+  null,
+  mapDispatchToProps
+)(SignUp);
