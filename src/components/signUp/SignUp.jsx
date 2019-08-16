@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { useState } from "react";
 
 import FormInput from "../formInput/FormInput";
 import CustomButton from "../customButon/CustomButton";
@@ -10,107 +10,83 @@ import "./SignUp.scss";
 // Se importa accion que escucha las sagas
 import { signUpStart } from "../../redux/user/UserActions";
 
-class SignUp extends Component {
-  constructor() {
-    super();
+// Se obtienen las props del highOrderComponent (Connect)
+function SignUp({ signUpStart }) {
+  // Se crea el estado, en donde, el primer parametro son los valores que contendrá el estado y el segudo parametro
+  // es la funcion que se ejecuta para modificar esos valores
+  // En este caso el primer parametro consta de un objeto (el estado local del componente) con los datos del usuario
+  // que se va a registrar en la pagina
+  const [userCredentials, setUserCredentials] = useState({
+    displayName: "",
+    email: "",
+    password: "",
+    confirmPassword: ""
+  });
 
-    this.state = {
-      displayName: "",
-      email: "",
-      password: "",
-      confirmPassword: ""
-    };
-  }
+  // Se obtienen los valores del estado mediante objectDestructurin
+  const { displayName, email, password, confirmPassword } = userCredentials;
 
-  handleSubmit = async event => {
+  const handleSubmit = async event => {
     event.preventDefault();
-    const { displayName, email, password, confirmPassword } = this.state;
-
     if (password !== confirmPassword) {
       alert("The passwords don't march");
       return;
     }
-
-    const { signUpStart } = this.props;
     signUpStart(email, password, displayName);
-
-    /* try {
-      // Se utiliza una funcion de firebase para crear un usuario con email y contraseña
-      const { user } = await auth.createUserWithEmailAndPassword(
-        email,
-        password
-      );
-
-      await createUserProfileDocument(user, { displayName });
-
-      //   Cuando se crea el usuario se actualiza el estado para borrar los datos del form
-      this.setState({
-        displayName: "",
-        email: "",
-        password: "",
-        confirmPassword: ""
-      });
-    } catch (error) {
-      console.log(error);
-    }
-     */
   };
 
-  handleChange = event => {
+  const handleChange = event => {
     const { name, value } = event.target;
 
-    this.setState({ [name]: value });
+    // Se actualiza el estado local con la funcion de Hooks, con el nombre del input y el valor
+    setUserCredentials({ ...userCredentials, [name]: value });
   };
 
-  render() {
-    const { displayName, email, password, confirmPassword } = this.state;
+  return (
+    <div className="sign-up">
+      <h2 className="title"> I do not have an account</h2>
+      <span>Sign up with your email and a password</span>
+      <form onSubmit={handleSubmit} className="sign-up-form">
+        <FormInput
+          type="text"
+          name="displayName"
+          value={displayName}
+          onChange={handleChange}
+          label="Display Name"
+          required
+        />
 
-    return (
-      <div className="sign-up">
-        <h2 className="title"> I do not have an account</h2>
-        <span>Sign up with your email and a password</span>
-        <form onSubmit={this.handleSubmit} className="sign-up-form">
-          <FormInput
-            type="text"
-            name="displayName"
-            value={displayName}
-            onChange={this.handleChange}
-            label="Display Name"
-            required
-          />
+        <FormInput
+          type="email"
+          name="email"
+          value={email}
+          onChange={handleChange}
+          label="Email"
+          required
+        />
 
-          <FormInput
-            type="email"
-            name="email"
-            value={email}
-            onChange={this.handleChange}
-            label="Email"
-            required
-          />
+        <FormInput
+          type="password"
+          name="password"
+          value={password}
+          onChange={handleChange}
+          label="Password"
+          required
+        />
 
-          <FormInput
-            type="password"
-            name="password"
-            value={password}
-            onChange={this.handleChange}
-            label="Password"
-            required
-          />
+        <FormInput
+          type="password"
+          name="confirmPassword"
+          value={confirmPassword}
+          onChange={handleChange}
+          label="Confirm Password"
+          required
+        />
 
-          <FormInput
-            type="password"
-            name="confirmPassword"
-            value={confirmPassword}
-            onChange={this.handleChange}
-            label="Confirm Password"
-            required
-          />
-
-          <CustomButton type="submit">Sign Up</CustomButton>
-        </form>
-      </div>
-    );
-  }
+        <CustomButton type="submit">Sign Up</CustomButton>
+      </form>
+    </div>
+  );
 }
 
 // Crea el objeto  que utiliza la accion signUpStart de UserActions

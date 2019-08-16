@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { useState } from "react";
 import { connect } from "react-redux";
 import "./SignIn.scss";
 
@@ -11,84 +11,77 @@ import {
   emailSignInStart
 } from "../../redux/user/UserActions";
 
-class SignIn extends Component {
-  constructor(props) {
-    super(props);
+// Se obtienen las props del highOrderComponent (Connect)
 
-    this.state = {
-      email: "",
-      password: ""
-    };
-  }
+function SignIn({ emailSignInStart, googleSignInStart }) {
+  // Se crea el estado, en donde, el primer parametro son los valores que contendrá el estado y el segudo parametro
+  // es la funcion que se ejecuta para modificar esos valores
+  // En este caso el primer parametro consta de un objeto (el estado local del componente) con el email y la contraseña
+  // del usuario
+  const [userCredentials, setCredentials] = useState({
+    email: "",
+    password: ""
+  });
+
+  // Se obtienen los valores del estado mediante objectDestructuring
+  const { email, password } = userCredentials;
 
   // Metodo para controlar al momento de hacer submit
-  handleSubmit = async event => {
+  const handleSubmit = async event => {
     event.preventDefault();
 
-    // Se obtiene la funcion desde mapDispatchToProps
-    const { emailSignInStart } = this.props;
-    // Se obtienen los valores del estado
-    const { email, password } = this.state;
-
-    this.setState({ email: "", password: "" });
-    // Se llama a la funcion (accion)
     emailSignInStart(email, password);
   };
 
   // Evento para controlar los inputs
-  handleChange = event => {
+  const handleChange = event => {
     // Se hace destructuring del event.taget que regresa como name, el nombre del input
     // y value el valor del input
     const { value, name } = event.target;
 
-    // Se actualiza el estado, con el nombre del input y el valor
-    this.setState({ [name]: value });
+    // Se actualiza el estado local con la funcion de Hooks, con el nombre del input y el valor
+    setCredentials({ ...userCredentials, [name]: value });
   };
 
-  render() {
-    // Se obtiene la funcion (accion) desde mapDispatchToProps
-    const { googleSignInStart } = this.props;
+  return (
+    <div className="sign-in">
+      <h2>I already have an account</h2>
+      <span>Sign in with your email and password</span>
 
-    return (
-      <div className="sign-in">
-        <h2>I already have an account</h2>
-        <span>Sign in with your email and password</span>
+      <form onSubmit={handleSubmit}>
+        {/* Se renderiza el componente FormInput y se mandan las props  */}
+        <FormInput
+          type="email"
+          name="email"
+          value={email}
+          required
+          label="email"
+          handleChange={handleChange}
+        />
 
-        <form onSubmit={this.handleSubmit}>
-          {/* Se renderiza el componente FormInput y se mandan las props  */}
-          <FormInput
-            type="email"
-            name="email"
-            value={this.state.email}
-            required
-            label="email"
-            handleChange={this.handleChange}
-          />
+        <FormInput
+          type="password"
+          name="password"
+          value={password}
+          required
+          label="password"
+          handleChange={handleChange}
+        />
 
-          <FormInput
-            type="password"
-            name="password"
-            value={this.state.password}
-            required
-            label="password"
-            handleChange={this.handleChange}
-          />
-
-          <div className="buttons">
-            <CustomButton type="submit">Sign In</CustomButton>
-            <CustomButton
-              type="button"
-              // se llama la funcion (accion)
-              onClick={googleSignInStart}
-              isGoogleSignIn
-            >
-              Sign In with Google
-            </CustomButton>
-          </div>
-        </form>
-      </div>
-    );
-  }
+        <div className="buttons">
+          <CustomButton type="submit">Sign In</CustomButton>
+          <CustomButton
+            type="button"
+            // se llama la funcion (accion)
+            onClick={googleSignInStart}
+            isGoogleSignIn
+          >
+            Sign In with Google
+          </CustomButton>
+        </div>
+      </form>
+    </div>
+  );
 }
 
 const mapDispatchToProps = dispatch => ({
