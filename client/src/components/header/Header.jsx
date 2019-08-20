@@ -46,9 +46,6 @@ function Header({ currentUser, hidden, signOutStart }) {
 
       <OptionsContainer>
         <OptionLink to="/shop">Shop</OptionLink>
-        <Link className="option" to="/shop">
-          Contact
-        </Link>
 
         {currentUser ? (
           // Se llama a la funcion que se obtiene de mapDispatchToProps
